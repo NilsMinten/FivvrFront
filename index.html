@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/Controllers/ConnectionController.js"></script>
     <script src="js/Controllers/PaymentController.js"></script>
@@ -17,7 +18,7 @@
 </head>
 <body>
     <div id="header"></div>
-    <div id="content"></div>
+    <div id="content" class="container"></div>
     <div id="footer"></div>
 </body>
 <script>
@@ -26,14 +27,15 @@
     let servicesController = new ServicesController();
     let userController = new UserController();
 
-    let appController = new App(connectionController, paymentController, servicesController, userController);
+    let appController = new App();
 
-    let json_result = connectionController.getData('/service', {});
-    console.log(json_result);
-
-    appController.loadHeader();
+    if (Cookies.get('api')) {
+        appController.loadHeaderForUser()
+    } else {
+        appController.loadHeader();
+    }
     appController.loadFooter();
-    appController.loadIndex();
+    servicesController.loadIndex();
 
 </script>
 </html>

@@ -1,25 +1,10 @@
 class App {
-    connectionController;
-    paymentController;
-    servicesController;
-    userController;
+    url = 'http://0.0.0.0:8000';
+    api_key = null;
 
-    constructor (
-        connectionController,
-        paymentController,
-        servicesController,
-        userController
-    ) {
-        this.connectionController = connectionController;
-        this.paymentController = paymentController;
-        this.servicesController = servicesController;
-        this.userController = userController;
-    }
-
-    loadIndex() {
-        let json_result = this.connectionController.getData('/service', {});
-        console.log(json_result);
-        $("#header").html(json_result);
+    loadLogin() {
+        $('#content').load('Pages/login.html');
+        document.title = 'Fivvr | Login'
     }
 
     loadHeader () {
