@@ -3,6 +3,10 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/Controllers/ConnectionController.js"></script>
+    <script src="js/Controllers/PaymentController.js"></script>
+    <script src="js/Controllers/ServicesController.js"></script>
+    <script src="js/Controllers/UserController.js"></script>
     <script src="js/app.js"></script>
     <link rel="stylesheet" href="css/bootstrap-grid.css">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -17,8 +21,19 @@
     <div id="footer"></div>
 </body>
 <script>
-    let AppController = new App();
-    AppController.loadHeader();
+    let connectionController = new ConnectionController();
+    let paymentController = new PaymentController();
+    let servicesController = new ServicesController();
+    let userController = new UserController();
+
+    let appController = new App(connectionController, paymentController, servicesController, userController);
+
+    let json_result = connectionController.getData('/service', {});
+    console.log(json_result);
+
+    appController.loadHeader();
+    appController.loadFooter();
+    appController.loadIndex();
 
 </script>
 </html>
