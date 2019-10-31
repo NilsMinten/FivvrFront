@@ -8,6 +8,7 @@
     <script src="js/Controllers/PaymentController.js"></script>
     <script src="js/Controllers/ServicesController.js"></script>
     <script src="js/Controllers/UserController.js"></script>
+    <script src="js/Controllers/KarmaController.js"></script>
     <script src="js/app.js"></script>
     <link rel="stylesheet" href="css/bootstrap-grid.css">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -19,13 +20,13 @@
 <body>
     <div id="header"></div>
     <div id="content" class="container"></div>
-    <div id="footer"></div>
 </body>
 <script>
     let connectionController = new ConnectionController();
     let paymentController = new PaymentController();
     let servicesController = new ServicesController();
     let userController = new UserController();
+    let karmaController = new KarmaController();
 
     let appController = new App();
 
@@ -34,7 +35,6 @@
     } else {
         appController.loadHeader();
     }
-    appController.loadFooter();
     servicesController.loadIndex();
 
 </script>

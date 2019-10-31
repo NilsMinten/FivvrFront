@@ -69,10 +69,42 @@ class ServicesController {
             admin_bar.html(edit_button);
             admin_bar.append(delete_button);
             service_page.append(admin_bar);
+        } else {
+            let upvote_bar = $('<div>', {'class': 'row'});
+            let edit_button = $('<button>', { 'class': 'btn btn-primary', 'onclick': 'servicesController.likeService('+service.id+')'});
+            edit_button.html('Like');
+
+            upvote_bar.html(edit_button);
+            service_page.append(upvote_bar);
+        }
+
+        if (Cookies.get('user')) {
+            let user = $.parseJSON(Cookies.get('user'));
+
+            if (user.group === 'admin') {
+                let site_admin_bar = $('<div>', {'class': 'row'});
+                let manage_button = $('<button>', { 'class': 'btn btn-primary', 'onclick': 'karmaController.loadUser('+service.user_id+')'});
+
+                manage_button.html('Manage user karma');
+
+                site_admin_bar.html(manage_button);
+                service_page.append(site_admin_bar);
+            }
         }
 
         $('#content').html(service_page);
         document.title = 'Fivvr | ' + service.title;
+    }
+
+    likeService(service_id) {
+        $.ajax({
+            url: connectionController.url + '/service/upvote/' + service_id ,
+            dataType: 'html',
+            type: 'post',
+            contentType: 'application/x-www-form-urlencoded',
+            data: {},
+            success: this.loadService(service_id)
+        });
     }
 
     loadService(service_id) {

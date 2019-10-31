@@ -14,8 +14,4 @@ class App {
     loadHeaderForUser () {
         $("#header").load("Assets/header_user.html");
     }
-
-    loadFooter () {
-        $("#footer").load("Assets/footer.html");
-    }
 }
