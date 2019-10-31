@@ -1,5 +1,4 @@
 #TODO:
-* Add editing
 * Post verwijderen
 * Admin karma management / admin header
 * Footer

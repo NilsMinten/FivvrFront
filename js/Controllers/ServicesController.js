@@ -36,6 +36,8 @@ class ServicesController {
 
     __handleService(json_data) {
         let service = $.parseJSON(json_data);
+        let is_author = service.author_role;
+
         let service_page = $('<div>', {'class': 'service_page'});
             let service_title = $('<h1>', {'class': 'service_header'});
             let service_content = $('<p>', {'class': 'service_content'});
@@ -57,19 +59,96 @@ class ServicesController {
         service_footer.append(service_cost);
         service_footer.append(service_upvotes);
 
+        if (is_author) {
+            let admin_bar = $('<div>', {'class': 'row'});
+            let edit_button = $('<button>', { 'class': 'btn btn-primary', 'onclick': 'servicesController.loadEditService('+service.id+')'});
+            edit_button.html('Edit');
+
+            admin_bar.html(edit_button);
+            service_page.append(admin_bar);
+        }
+
         $('#content').html(service_page);
         document.title = 'Fivvr | ' + service.title;
     }
 
     loadService(service_id) {
+        let api = '';
+        if (Cookies.get('api')) {
+            api = Cookies.get('api');
+        }
+
         $.ajax({
             url: connectionController.url + '/service/' + service_id ,
             dataType: 'html',
             type: 'post',
             contentType: 'application/x-www-form-urlencoded',
-            data: { api: ''},
+            data: { api: api },
             success: this.__handleService
         });
+    }
+
+    __handleEditService(json_data) {
+        let service = $.parseJSON(json_data);
+
+        $('#title').val(service.title);
+        $('#description').val(service.description);
+        $('#cost').val(service.cost);
+        $('#service_id').val(service.id);
+    }
+
+    loadEditService(service_id) {
+        $('#content').load('/Pages/editservice.html');
+
+        let api = '';
+        if (Cookies.get('api')) {
+            api = Cookies.get('api');
+        }
+
+        $.ajax({
+            url: connectionController.url + '/service/' + service_id ,
+            dataType: 'html',
+            type: 'post',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { api: api },
+            success: this.__handleEditService
+        });
+    }
+
+    editService() {
+        let title = $('#title').val();
+        let description = $('#description').val();
+        let cost = $('#cost').val();
+        let service_id = $('#service_id').val();
+
+        $.ajax({
+            url: connectionController.url + '/service/edit/' + service_id,
+            dataType: 'html',
+            type: 'post',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { api: Cookies.get('api'), title: title, description: description, cost: cost * 100 },
+            success: servicesController.loadIndex()
+        });
+    }
+
+    createService() {
+        let title = $('#title').val();
+        let description = $('#description').val();
+        let cost = $('#cost').val();
+
+        $.ajax({
+            url: connectionController.url + '/service/create',
+            dataType: 'html',
+            type: 'post',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { api: Cookies.get('api'), title: title, description: description, cost: cost * 100 },
+            success: servicesController.loadIndex()
+        });
+    }
+
+    loadServiceCreate() {
+        document.title = 'Fivvr | Create Service';
+        $("#content").load('/Pages/newservice.html')
     }
 
     loadIndex() {
