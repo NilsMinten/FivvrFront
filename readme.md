@@ -1,5 +1,5 @@
 #TODO:
-* Post verwijderen
+* upvote post
 * Admin karma management / admin header
 * Footer
 * post creation

@@ -62,9 +62,12 @@ class ServicesController {
         if (is_author) {
             let admin_bar = $('<div>', {'class': 'row'});
             let edit_button = $('<button>', { 'class': 'btn btn-primary', 'onclick': 'servicesController.loadEditService('+service.id+')'});
+            let delete_button = $('<button>', { 'class': 'btn btn-primary', 'onclick': 'servicesController.loadDeleteService('+service.id+')'});
             edit_button.html('Edit');
+            delete_button.html('Delete');
 
             admin_bar.html(edit_button);
+            admin_bar.append(delete_button);
             service_page.append(admin_bar);
         }
 
@@ -113,6 +116,31 @@ class ServicesController {
             data: { api: api },
             success: this.__handleEditService
         });
+    }
+
+    deleteService() {
+        let service_id = $('#service_id').val();
+
+        let api = '';
+        if (Cookies.get('api')) {
+            api = Cookies.get('api');
+        }
+
+        $.ajax({
+            url: connectionController.url + '/service/delete/' + service_id ,
+            dataType: 'html',
+            type: 'post',
+            contentType: 'application/x-www-form-urlencoded',
+            data: { api: api },
+            success: this.loadIndex()
+        });
+    }
+
+    loadDeleteService(service_id) {
+        $('#content').load('/Pages/deleteservice.html');
+        setTimeout(function () {
+            $('#service_id').val(service_id);
+        }, 100);
     }
 
     editService() {
