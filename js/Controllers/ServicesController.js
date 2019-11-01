@@ -37,6 +37,7 @@ class ServicesController {
     __handleService(json_data) {
         let service = $.parseJSON(json_data);
         let is_author = service.author_role;
+        console.log(service);
 
         let service_page = $('<div>', {'class': 'service_page'});
             let service_title = $('<h1>', {'class': 'service_header'});
@@ -76,6 +77,44 @@ class ServicesController {
 
             upvote_bar.html(edit_button);
             service_page.append(upvote_bar);
+        }
+
+        if (service.hasOwnProperty('payments')) {
+            let table = $('<table>', {'class': 'table'});
+            let table_header = $('<thead>', {'class': ''});
+            let table_header_row = $('<tr>', {'class': ''});
+            let table_header_user = $('<th>', {'class': ''});
+            table_header_user.html('Sender');
+            let table_header_status = $('<th>', {'class': ''});
+            table_header_status.html('Status');
+            let table_header_cancel = $('<th>', {'class': ''});
+            table_header_cancel.html('Cancel');
+            let table_content = $('<tbody>', {'class': ''});
+
+            $.each(service.payments, function (index, payment) {
+                let table_row = $('<tr>', {'class': ''});
+                let table_row_user = $('<td>', {'class': ''});
+                let table_row_status = $('<td>', {'class': ''});
+
+                table_row_user.html(payment.sender);
+                table_row_status.html(payment.status);
+                table_row.append(table_row_user);
+                table_row.append(table_row_status);
+
+                table_content.append(table_row);
+            });
+
+            table.append(table_header);
+            table.append(table_content);
+            table_header.append(table_header_row);
+            table_header_row.append(table_header_user);
+            table_header_row.append(table_header_status);
+            table_header_row.append(table_header_cancel);
+            service_page.append(table);
+        } else {
+            let buy_button = $('<button>', { 'class': 'btn btn-primary', 'onclick': 'paymentController.buyService('+service.id+')'});
+            buy_button.html('Buy');
+            service_page.append(buy_button);
         }
 
         if (Cookies.get('user')) {

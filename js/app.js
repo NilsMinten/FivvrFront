@@ -7,6 +7,11 @@ class App {
         document.title = 'Fivvr | Login'
     }
 
+    loadRegister() {
+        $('#content').load('Pages/register.html');
+        document.title = 'Fivvr | Register'
+    }
+
     loadHeader () {
         $("#header").load("Assets/header.html");
     }
